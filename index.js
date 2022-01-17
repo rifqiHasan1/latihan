@@ -3,10 +3,9 @@ const app = express();
 const dotenv = require('dotenv')
 dotenv.config();
 const port = process.env.PORT || 8000;
-
-app.get('/', (req, res)=> {
-    res.send('Selamat datang')
-})
+const router = require("./routes");
+app.use(express.json())
+app.use(router);
 
 app.listen(port, ()=> {
     console.log(`server berjalan di port ${port}`);
