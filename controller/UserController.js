@@ -5,7 +5,6 @@ const index = async (req, res) => {
     const users = await UserModel.findAll({
       attributes: ["name", "email", "id", "jenisKelamin"],
     });
-
     return res.json({
       status: "succsses",
       msg: "daftar user ditemukan",
