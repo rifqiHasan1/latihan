@@ -1,27 +1,28 @@
 const express = require("express");
+const { route } = require("express/lib/application");
 const router = express.Router();
-const UserModel = require("../models").user;
-const bcrypt = require('bcrypt');
+const { register } = require("../controller/AuthController");
+const validationMiddleware = require("../middleware/validationMiddleware");
+const { validationRegister } = require("../validators/authValidator");
+const {index,detail, detailByEmail, destroy, update} = require("../controller/UserController")
 
 router.get("/", (req, res) => {
   res.json({
     status: "ok",
   });
 });
-router.post("/register", async (req, res) => {
-  try {
-    let body = req.body;
-    body.password = await bcrypt.hashSync(body.password, 10);
-    const users = await UserModel.create(body)
-    console.log(users)
+router.post(
+  "/register",
+  validationRegister,
+  validationMiddleware,
+  register
+);
 
-    res.json({
-      status: 'success',
-      msg: 'Register berhasil'
-    });
-  } catch (err) {
-    console.log(err);
-  }
-});
+//user
+router.get("/users",index);
+router.get("/users/:id", detail)
+router.get("/users/email/:email",detailByEmail)
+router.delete("/users/:id", destroy)
+router.put("/users/update/:id", update)
 
 module.exports = router;
