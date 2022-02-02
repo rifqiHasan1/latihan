@@ -1,16 +1,16 @@
-const UserModel = require("../models").Produk;
+const UserModel = require("../models").user;
 
 const index = async (req, res) => {
   try {
     const users = await UserModel.findAll({
-      attributes: ["id","kodeProduk", "namaProduk", "jumlah", "hargaSatuan"],
+      attributes: ["name", "email", "id", "jenisKelamin"],
     });
     return res.json({
       status: "succsses",
       msg: "daftar user ditemukan",
       data: users,
     });
-  } catch{
+  } catch {
     console.log(err);
     return res.status(403).json({
       status: "fail",
@@ -106,19 +106,18 @@ const destroy = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { id } = req.params;
-    const { namaProduk, hargaSatuan, jumlah } = req.body;
-    const usersUpdate = await UserModel.findByPk(id);
-    if (usersUpdate === null) {
+    const { name } = req.body;
+    const users = await UserModel.findByPk(id);
+    if (users === null) {
       return res.json({
         status: "fail",
-        msg: "gagal",
+        msg: "User tidak ditemukan",
       });
     }
+
     await UserModel.update(
       {
-        namaProduk,
-        hargaSatuan,
-        jumlah
+        name: name,
       },
       {
         where: {
@@ -126,16 +125,15 @@ const update = async (req, res) => {
         },
       }
     );
+
     return res.json({
-      status: "Berhasil",
-      messege: "Berhasil Diupdate",
+        status: "success",
+        msg: "Data user berhasil diperbaharui"
     });
-  } catch (error) {
-    console.log(error);
-    console.log(error);
+  } catch (err) {
     return res.status(403).json({
       status: "fail",
-      msg: "fail",
+      msg: "Ada Kesalahan",
     });
   }
 };
