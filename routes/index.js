@@ -12,17 +12,17 @@ router.get("/", (req, res) => {
   });
 });
 router.post(
-  "/register",
+  "/produk",
   validationRegister,
   validationMiddleware,
   register
 );
 
 //user
-router.get("/users",index);
-router.get("/users/:id", detail)
-router.get("/users/email/:email",detailByEmail)
-router.delete("/users/:id", destroy)
-router.put("/users/update/:id", update)
+router.get("/produk",index);
+router.get("/produk/:id", detail)
+router.get("/produk/email/:email",detailByEmail)
+router.delete("/produk/:id", destroy)
+router.put("/produk/update/:id", update)
 
 module.exports = router;

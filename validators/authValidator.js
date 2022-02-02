@@ -1,30 +1,22 @@
 const { check } = require("express-validator");
-const UserModel = require("../models").user;
+const UserModel = require("../models").Produk;
 
 const validationRegister = [
-    check("name").isLength({ min: 1 }).withMessage("nama wajib diisi"),
-    check("email")
-      .isEmail()
-      .withMessage("Gunakan Email Valid")
+    check("kodeProduk")
       .custom((value) => {
         return UserModel.findOne({
           where: {
-            email: value,
+            kodeProduk: value,
           },
         }).then((user) => {
           if (user) {
-            return Promise.reject("Email sudah Digunakan");
+            return Promise.reject("kode sudah digunakan");
           }
         });
       }),
-    check("password").isLength({ min: 8 }).withMessage("password wajib 8"),
-    check("status")
-      .isIn(["active", "nonactive"])
-      .withMessage("status bukan enum"),
-    check("jenisKelamin")
-      .isIn(["laki-laki", "perempuan"])
-      .withMessage("jenis-kelamin hanya laki-laki dan perempuan"),
-  
+    check("namaProduk").isLength({ min: 1 }).withMessage("namaProduk wajib 8"),
+    check("jumlah").isLength({ min: 1 }).withMessage("jumlah wajib 8"),
+    check("hargaSatuan").isLength({ min: 1 }).withMessage("hargaSatuan wajib 8"),
 ];
 
 module.exports = {validationRegister}
